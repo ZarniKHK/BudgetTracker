@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Expense Tracker</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">  </head>
+<body>
+  <header>
+    <h1>Personal Budget Tracker : Track your money as you spend</h1>
+  </header>
+
+  <h2> Your initial Budget is 1000 GBP.</h2>
+
+  <div class="input">
+    <h2>Input your information below:</h2>
+
+    <form method="POST">
+
+      <label for="category">Please select the category of your spending:</label>
+      <select id="category" name="category">
+        <option value="1">Shopping</option>
+        <option value="2">Bills</option>
+        <option value="3">Eating out</option>
+        <option value="4">Groceries</option>
+      </select><br>
+
+      <label for="amount">Amount(in GBP):</label>
+      <input type="text" id="amount" name="amount">
+      <br>
+
+      <label for="description">Enter description</label>
+      <input type="text" id="description" name="description">
+      <br>
+  
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+
+  <!-- in case of error, show error -->
+  {% if error %}
+    <p>{{ error }}</p>
+  {% endif %}
+
+  <br>
+  <br>
+  <br>
+
+  <h2>Your Financial Data:</h2>
+
+  <h4>Total Expense: {{ finance['Total expense'] }} GBP</h4>
+  <h4>Remaining Budget: {{ finance['Remaining budget'] }} GBP</h4>
+
+  <table>
+    <tr>
+      <th>Category</th>
+      <th>Description</th>
+      <th>Amount</th>
+    </tr>
+    {% for expense in expenses %}
+      <tr>
+        <td>{{ expense['category'] }}</td>
+        <td>
+          {% for description in expense['descriptions'] %}
+            {{ description }}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        </td>
+        <td>
+          {% for amount in expense['amounts'] %}
+            {{ amount }}{% if not loop.last %}, {% endif %}
+          {% endfor %}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+
+  <br>
+  <br>
+
+  <br>
+  <h2>Graphical Illustrations of Your Financial Data:</h2>
+
+  <section>
+    <div>
+      <h4>Pie Chart of your budget</h4>
+      <img src="{{ url_for('static', filename='pie_chart.png') }}" alt="Pie Chart">
+    </div>
+
+    <div> 
+      <h4>Bar Graphs for each Category</h4>
+      <img src="{{ url_for('static', filename='Groceries_pie_chart.png') }}" alt="Pie Chart">
+
+    </div>
+  </section>
+  
+</body>
+</html>
